@@ -1,0 +1,11 @@
+{
+  "name": "nodebaseapp",
+  "version": "1.0.0",
+  "description": "Entry point for node and mongodb application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "experiMental fab",
+  "license": "ISC"
+}
