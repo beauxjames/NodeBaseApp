@@ -42,6 +42,7 @@ You can then download this repository, navigate to the folder in your Terminal, 
 
 ```
 npm install
+npm install concurrently -g
 npm start
 ```
 
