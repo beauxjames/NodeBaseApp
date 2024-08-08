@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
-import appRoutes from './controllers';
+import appRoutes from './routes';
 import ServerState from './types/ServerState.type';
 
 module.exports = function() {
