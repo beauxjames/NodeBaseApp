@@ -1,5 +1,5 @@
 import { Connection } from "mongoose";
-import { User, userSchema } from "./models/user.model";
+import UserModel from './models/user.model';
 
 const mongoose = require('mongoose');
 
@@ -16,8 +16,7 @@ export default class Database {
     async _connect() {
         console.log('server', this._server)
         
-        const conn = mongoose.createConnection()
-        conn.model('User', userSchema)
+        mongoose.createConnection()
         await mongoose.connect(`mongodb://${this._server}/${this._database}`)
         
         console.log('Database connection successful');
