@@ -1,7 +1,4 @@
-import { Connection } from "mongoose";
-import UserModel from './models/user.model';
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 export default class Database {
     private _server: String;

@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import appRoutes from './routes';
 import ServerState from './types/ServerState.type';
+import { errorHandler } from './middleware/errors';
 
 module.exports = function() {
     
@@ -13,7 +14,8 @@ module.exports = function() {
 
     // establish routes
     app.use(appRoutes);
-
+    app.use(errorHandler);
+    
     const statePromise: Promise<ServerState> =  new Promise((resolve, reject) => {
         resolve({server: app})
     });
