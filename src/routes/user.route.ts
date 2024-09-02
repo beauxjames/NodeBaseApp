@@ -1,6 +1,8 @@
 import { Router, Request, Response, NextFunction } from "express";
 import UserModel from "../database/models/user.model";
 import NotFoundError from "../errors/NotFoundError";
+import Logger from "../utilities/logger";
+import BadRequestError from "../errors/BadRequestError";
 
 const router = Router();
 
@@ -22,14 +24,37 @@ router.get('/:username', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.post('/', async (req: Request, res: Response) => {
-    let user = await UserModel.create(req.body);
-    res.status(201).send(user);
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let user = await UserModel.create(req.body);
+        res.status(201).send(user);
+    } catch (err) {
+        next(new BadRequestError({ message: 'Duplicate Entry', context: [err]}));
+    }
+    
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
-    let user = await UserModel.findByIdAndDelete(req.params.id);
-    res.status(200).send(user);
-})
+router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let user = await UserModel.findByIdAndDelete(req.params.id);    
+        if(!user) {
+            next(new NotFoundError({ message: 'No User Entry Found', context: [{ id: req.params.id }] }))
+        } else {
+            res.status(200).send(user);
+        }
+    } catch (err) {
+        next(new BadRequestError({ message: 'No Entry Deleted', context: [err]}))
+    }
+});
 
+router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        Logger.info(req.body);
+        let userQuery =  { '_id': req.params.id };
+        let user = await UserModel.findOneAndUpdate(userQuery, req.body, { upsert: false, new: true });
+        res.status(200).send(user);
+    } catch(err) {
+        next(new BadRequestError({ message: 'Cannot Update User', context: [err]}))
+    }
+})
 export default router;

@@ -8,3 +8,4 @@ node_modules
 client*
 app*
 npm-debug.log
+logs*
