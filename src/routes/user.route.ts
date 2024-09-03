@@ -1,7 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import UserModel from "../database/models/user.model";
 import NotFoundError from "../errors/NotFoundError";
-import Logger from "../utilities/logger";
 import BadRequestError from "../errors/BadRequestError";
 
 const router = Router();
@@ -49,7 +48,6 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
 
 router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        Logger.info(req.body);
         let userQuery =  { '_id': req.params.id };
         let user = await UserModel.findOneAndUpdate(userQuery, req.body, { upsert: false, new: true });
         res.status(200).send(user);
